@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#160b20">
+<title>Sirf Aapke Liye ♡</title>
+<style>
+:root{--bg:#120817;--pink:#ff77b7;--pink2:#ffb8d8;--lilac:#c7a2ff;--cream:#fff0f7;--muted:#d9bfd3;--line:rgba(255,190,220,.22)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--cream);font-family:"Segoe UI",system-ui,-apple-system,sans-serif;overflow-x:hidden;min-height:100vh}
+button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:2px solid var(--pink2);outline-offset:4px}
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;background:radial-gradient(ellipse at 50% -15%,#592448 0,transparent 50%),radial-gradient(ellipse at 0% 65%,#32134266 0,transparent 42%),linear-gradient(180deg,#16091e,#100713 80%)}
+.blob{position:absolute;width:220px;height:220px;border-radius:50%;filter:blur(65px);opacity:.28;animation:drift 12s ease-in-out infinite alternate}.blob.a{background:#ff4b9a;left:-100px;top:25%}.blob.b{background:#9258ff;right:-110px;top:60%;animation-delay:-5s}
+canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}#stars{z-index:0}#fx{z-index:20}
+.app{position:relative;z-index:1;width:100%;max-width:480px;margin:0 auto;min-height:100svh;padding:18px 17px 42px}
+.topbar{display:flex;align-items:center;justify-content:space-between;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#e9b8d7;padding:8px 2px 20px}
+.status{display:flex;align-items:center;gap:6px}.dot{height:6px;width:6px;border-radius:50%;background:#79ffd2;box-shadow:0 0 10px #79ffd2}
+.scene{display:none;min-height:78svh;animation:sceneIn .7s cubic-bezier(.2,.8,.2,1) both}.scene.active{display:flex;flex-direction:column;justify-content:center}
+.center{text-align:center}.overline{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--pink2);margin-bottom:15px}
+h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-1px}h1{font-size:clamp(43px,12vw,60px);line-height:.98;margin:0 0 18px}h1 em{font-weight:400;color:var(--pink);text-shadow:0 0 30px #ff77b74f}
+h2{font-size:34px;line-height:1.08;margin:0 0 14px}p{color:var(--muted);font-size:14px;line-height:1.95}
+.lead{max-width:345px;margin:0 auto 24px}
+.primary,.secondary{border:0;border-radius:99px;padding:14px 19px;font-size:13px;font-weight:700;transition:transform .2s,box-shadow .2s}
+.primary{color:#2a1024;background:linear-gradient(135deg,#ffd0e5,#ff73b2 58%,#dc82ff);box-shadow:0 8px 32px #ff63ac3c}.secondary{color:#ffe7f4;background:#ffffff0c;border:1px solid var(--line)}.primary:active,.secondary:active{transform:scale(.97)}
+.btnrow{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px}
+.heart-orbit{width:210px;height:210px;margin:0 auto 24px;position:relative;display:grid;place-items:center}.ring{position:absolute;border:1px solid #ff9dcb45;border-radius:50%;inset:8px;animation:rotate 18s linear infinite}.ring.r2{inset:28px;border-style:dashed;animation-direction:reverse;animation-duration:25s}
+.ring:before,.ring:after{content:"✦";position:absolute;color:var(--pink2);text-shadow:0 0 16px var(--pink);font-size:17px}.ring:before{top:8%;left:20%}.ring:after{right:15%;bottom:13%}
+.core{font-size:88px;filter:drop-shadow(0 0 22px #ff5da5aa);animation:heartbeat 2.2s ease-in-out infinite}.floaty{position:absolute;color:var(--pink2);animation:bob 3s ease-in-out infinite;font-size:20px}.f1{left:4px;top:32px}.f2{right:8px;top:52px;animation-delay:-1.2s}.f3{bottom:13px;left:42px;animation-delay:-.7s}
+.card{background:linear-gradient(150deg,#ffffff10,#ffffff05);border:1px solid var(--line);border-radius:25px;padding:22px 18px;box-shadow:0 15px 55px #00000026;backdrop-filter:blur(14px)}.card+.card{margin-top:14px}
+.card-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--pink2);margin-bottom:11px}.clue{font-family:Georgia,serif;font-size:24px;line-height:1.3;color:#fff0f7;margin:0 0 10px}.small{font-size:12px;line-height:1.8;margin:0;color:#cbb4cb}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:19px}
+.mystery{min-height:140px;text-align:left;padding:15px 13px;border:1px solid #ffadd22c;border-radius:20px;color:#fff0f7;background:linear-gradient(150deg,#ffffff12,#ffffff05);position:relative;overflow:hidden;transition:transform .25s,border-color .25s}
+.mystery:before{content:"";position:absolute;width:110px;height:110px;border-radius:50%;background:#ff5ca51c;filter:blur(18px);right:-50px;bottom:-45px}.mystery:active{transform:scale(.97)}
+.mystery .num{display:block;color:#ff9cc9;font-size:10px;letter-spacing:2px;margin-bottom:13px}.mystery .symbol{display:block;font-size:27px;margin-bottom:10px;filter:drop-shadow(0 0 10px #ff7fb7)}.mystery strong{display:block;font-size:12px;line-height:1.4;font-weight:650}.mystery small{display:block;color:#cdb5ca;font-size:10px;margin-top:6px}.lock{font-size:10px;color:#ffc2dd;position:absolute;right:12px;top:12px}
+.modal-backdrop{position:fixed;inset:0;background:#08040bd9;z-index:30;display:none;align-items:flex-end;justify-content:center;padding:12px}.modal-backdrop.open{display:flex;animation:fade .25s ease}
+.modal{width:100%;max-width:440px;max-height:86svh;overflow:auto;border-radius:28px 28px 22px 22px;padding:24px 20px 27px;border:1px solid #ff9cc74d;background:radial-gradient(ellipse at top,#49213e,#1b0d24 68%);box-shadow:0 0 80px #ff3f9c24;animation:modalUp .45s cubic-bezier(.2,.8,.2,1)}
+.modal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.modal-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#ffb9d9}.close{border:1px solid var(--line);background:#ffffff0b;color:#ffeaf5;border-radius:50%;height:36px;width:36px;font-size:19px}
+.modal h2{font-size:31px}.modal p{white-space:pre-line;font-size:14px;line-height:2}.progress-wrap{height:3px;border-radius:10px;background:#ffffff16;overflow:hidden;margin:4px 0 20px}.progress{height:100%;width:0;background:linear-gradient(90deg,#ff7cb7,#c4a2ff);transition:width .4s}
+.footer{text-align:center;color:#a98ba5;font-size:10px;line-height:1.8;margin-top:22px}
+.music{position:fixed;z-index:15;right:max(12px,calc((100vw - 480px)/2 + 12px));bottom:14px;border:1px solid #ffb5d44d;background:#25122df0;color:#ffe6f2;border-radius:99px;padding:11px 14px;font-size:11px;box-shadow:0 8px 25px #0005}
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:80px;
+  transform:translateX(-50%);
+  z-index:40;
+  width:min(520px, calc(100vw - 28px));
+  max-width:520px;
+  padding:18px 22px;
+  border-radius:28px;
+  background:#ffe8f2;
+  color:#8f315d;
+  font-size:14px;
+  line-height:1.7;
+  box-shadow:0 8px 25px #0004;
+  display:none;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  text-align:center;
+}
+.toast.show{
+  display:block;
+  animation:fade .3s;
+}
+@keyframes sceneIn{from{opacity:0;transform:translateY(18px) scale(.99)}to{opacity:1;transform:none}}@keyframes modalUp{from{transform:translateY(40px);opacity:.5}to{transform:translateY(0);opacity:1}}@keyframes fade{from{opacity:0}to{opacity:1}}@keyframes rotate{to{transform:rotate(360deg)}}@keyframes heartbeat{0%,100%{transform:scale(1)}12%,24%{transform:scale(1.08)}18%,30%{transform:scale(1)}}@keyframes bob{0%,100%{transform:translateY(0) rotate(-9deg)}50%{transform:translateY(-12px) rotate(8deg)}}@keyframes drift{to{transform:translate(40px,-25px) scale(1.2)}}
+@media(min-width:600px){body{padding:20px 0}.app{border:1px solid #ffffff10;border-radius:30px;box-shadow:0 30px 100px #0007;min-height:calc(100svh - 40px)}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="ambient">
+  <div class="blob a"></div>
+  <div class="blob b"></div></div><canvas id="stars"></canvas>
+  <canvas id="fx"></canvas>
+  
+<main class="app">
+ <header class="topbar"><span>KUCHH LAFZ, KUCHH JAZBAAT♡</span>
+  <span class="status"><i class="dot"></i> SIRF AAPKE LIYE</span></header>
+ <section class="scene active center" id="scene0">
+  <div class="heart-orbit"><div class="ring"></div>
+  <div class="ring r2"></div>
+  <span class="floaty f1">✧</span>
+  <span class="floaty f2">♡</span><span class="floaty f3">✦</span>
+  <div class="core">💗</div></div>
+  <div class="overline">AAPKE LYE, MERE DIL SE BANAI HUE WEBSITE</div>
+  <h1>Hey, <em>Babe.</em><br>toh chlte hh....</h1>
+  <p class="lead">Okay, toh aapke liye kuch chhota sa bnaya h.🤍
+Isme kuch random baate h, kuch things I wanted to tell you, 
+or kuch aise thoughts jo bs aapke saath share krne ka mnn kiya.
+Ab kya hai, woh toh buttons kholne ke baad hi pata chalega. 👀
+
+Go on, explore. ♡</p>
+  <button class="primary" onclick="goTo(1);sparkBurst(35)">Chlo, surprise kholo ✨</button>
+  <p class="small" style="margin-top:20px;font-size:10px">BAS AAP, MAI OR YE CHHOTI SI DUNIYA ♡</p>
+ </section>
+
+ <section class="scene" id="scene1">
+  <div class="overline">mission 01 · dil ki baate</div>
+  <h2>Welcome,<br><em style="color:var(--pink)">darling.</em></h2>
+  <p>Happieee Birthdayyy, mere cutieeeee! 🎂❤️🥹💋
+    Aap meri life ke sbse special person ho, 
+    or mai bs yhi chati hu ki aap hamesha khush rho, 
+    aapke saare dreams poore ho or aapki smile kabhi kam na ho. 
+    I wish ek din mai aapka birthday aapke saath celebrate kr pau
+     Thank you meri life me hone ke lye, my favourite human. 
+     Aaj ka din aapke lye utna he special ho jitna special aap mere lye ho.
+      I love youuu so muchhh, my babeee! ❤️💋🧿</p>
+  <div class="card" style="margin-top:8px">
+    <div class="card-tag">surpriseeeeeeeeeee........</div>
+    <p class="clue">“Hr chhoti si card ke peeche, 
+      meri ek or baat aapka wait krri hhh.”</p>
+      <p class="small">Achaa babeee, ab aap khud he dekh lo aage kya hh. 🤭❤️
+         Bs itna smajh lo ki ye bnate time mere dimag me sirf aap he the or din ke 24 hrs rhte ho. 
+         Now open the cards</p></div>
+
+  <div class="grid">
+   <button class="mystery" onclick="openMystery('secret')">
+    <span class="num">FILE 001</span>
+    <span class="symbol">🗝️</span>
+    <strong>Ek secret se baat</strong>
+    <small>Jo aapko hamesha yaad rkhni h</small>
+    <span class="lock">✦</span></button>
+
+   <button class="mystery" onclick="openMystery('why')">
+    <span class="num">FILE 002</span>
+    <span class="symbol">💘</span><strong>aap he kyu?</strong>
+    <small>Mere cutiee, ye suno</small><span class="lock">✦</span></button>
+
+   <button class="mystery" onclick="openMystery('someday')">
+    <span class="num">FILE 003</span>
+    <span class="symbol">🌙</span>
+    <strong>Ek din… hum</strong>
+    <small>Ek pyaara sa sapna</small>
+    <span class="lock">✦</span></button>
+
+   <button class="mystery" onclick="openMystery('letter')">
+    <span class="num">FILE 004</span>
+    <span class="symbol">💌</span>
+    <strong>Dil se likha letter</strong>
+    <small>Sirf mere Babe ke lye</small>
+    <span class="lock">✦</span></button>
+
+  </div>
+  <div class="btnrow">
+    <button class="secondary" onclick="goTo(0)">← Phir se shuru</button>
+    <button class="primary" onclick="goTo(2)">Ek last surprise →</button></div>
+ </section>
+
+ <section class="scene center" id="scene2">
+  <div class="heart-orbit" style="height:170px;width:170px">
+    <div class="ring"></div>
+    <div class="ring r2"></div>
+    <div class="core" style="font-size:70px">💞</div></div>
+  <div class="overline">mission 02 · ek sawaal aapse</div>
+  <h2>darling,<br><em style="color:var(--pink)">ek baat btao?</em></h2>
+  <p class="lead">Darling, ek baat btao… kya aap mere lye 12th me 80% se zyada le aaoge? 🥹❤️ Mtlb aapko pta h na, muje aap pr kitna proud feel hoga🤭💗 To btao, apni wife ki itni si wish poori karoge naa mereee cutiee????😭😂❤️</p>
+  <div class="btnrow">
+    <button class="primary" onclick="showToast('Hayeee, ye hue naa mere cutiee wali baat! 💗');
+    sparkBurst(55)">Ha zarur launga Baby💗</button>
+    <button class="secondary" onclick="showToast('EXCUSE MEEE, BABE?! 😭😭 NO KAISE DBA DIYA AAPNE? AAPKO LGTA H YHA AAPKI CHLEGI? 😂❤️ NO ka to koi option he nhi h, 80% se zyada to laane he h, kyunki aapki wife ko apne husband pr proud feel krna h. 😤💗 Ab chupchaap YES dbao or pdhai krne jao😭📚💋')">Sochne do 🤭</button></div>
+  <button class="secondary" style="margin-top:25px" onclick="goTo(1)">Wapas mysteries par ↶</button>
+ </section>
+ <div class="footer">THODE SE PIXELS, DHER SAARA PYAAR AUR MERA FAVOURITE INSaan ♡<br></div>
+</main>
+<button class="music" id="musicButton" onclick="toggleMusic()">♫ soft vibes: off</button>
+<audio id="music" loop preload="none"><source src="soft-romantic.mp3" type="audio/mpeg"></audio>
+<div class="modal-backdrop" id="modal" onclick="if(event.target===this)closeMystery()"><article class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+ <div class="modal-top"><span class="modal-label" id="modalLabel">SECRET FILE</span><button class="close" onclick="closeMystery()" aria-label="Band karo">×</button></div>
+ <div class="progress-wrap"><div class="progress" id="progress"></div></div><h2 id="modalTitle">Ek secret baat</h2><div id="modalBody"></div>
+ <div class="btnrow" style="justify-content:flex-start"><button class="primary" id="modalNext" onclick="nextModal()">Agli baat →</button><button class="secondary" onclick="closeMystery()">Abhi ke liye band ♡</button></div>
+</article></div>
+<div class="toast" id="toast"></div>
+<script>
+// CUSTOMISE: Neeche har file ke pages mein apne bade paragraphs likho.
+// Har string ko backticks `...` ke andar likhna, taaki multiple lines bhi rakh sako.
+const mysteryFiles = {
+ secret:{
+  label:"FILE 001 · EK SECRET SI BAAT",
+  title:"Suno, mere Babe… 💗",
+  pages:[
+`Babe, bs ek baat hamesha yad rkhna, chahe life me kuch bhe ho, kitna bhe difficult time aai ya situations kaisi bhe ho jaai, mai hamesha aapke saath hu.Jha aapko lge duniya me koi aapke sath nhi us jgha bhe hamesha yad rkhna vha bhe mai aapke sath hu ❤️ Aapki khushi me bhe or aapke difficult time me bhe. `,
+`Aapko hr baar strong banne ki zaroorat nhi h, kbhi thk jao toh mujhse baat kr lena, kbhi kuch achha na lge to muje bta dena. Mai shyd hr problem solve na kr paau, lekin aapki baat sunne or aapko support karne ke liye hamesha rhungi. Aapko kbhi aisa feel nhi hona chahiye ki aapko sb kuch akele handle krna h. Hum hamesha sath h, babe, or mai chahti hu ki aap ye baat hamesha yad rkhna. I love you so much. ❤️🫶🏻`
+  ]
+ },
+
+ why:{
+  label:"FILE 002 · AAP HE KYU?",
+  title:"Mere cutiee, aap he kyu? 💘",
+  pages:[
+` Pta hai babe,aap hi kyu? kyuki ek doosre ke sath hum bina kisi reason ke khush ho jaate h. Aapki baate, mera aapko pareshan krna,aapka muje mnana or hamari random conversations—pta he nhi chala kb ye sb mere favourite parts bn gai din ka. ❤️
+Aapke sath muje koi baat sochkr nhi bolni pdti. Mai aapko bina kisi baat ke pareshan bhe kr skti hhu, gussa ho skti hu. 😂💗 Shyd ese lye aap mere lye itne special ho.`,
+`Or agr koi mujse pooche ki sief aap he kyu, to mai bs itna kahungi—kyunki aapke saath rehna achha lagta hai, aapse baat krna achha lgta h or aapko apni life me paakr main genuinely bhout khush hu. Bas ese lye, babe. Aap he kyu ka answer aap khud ho. 💋❤️`
+  ]
+ },
+
+ someday:{
+  label:"FILE 003 · EK DIN… HUM",
+  title:"Ek din ki imagination 🌙",
+  pages:[
+`Kbhi-kbhi imagine krti hu ki wo din kaisa hoga jab hum finally saamne milenge. 🥹❤️ Itne time se jis insaan se phone pr baate kri h , usse finally apne saamne dekhna kitna alg feel hoga. Shayad shuru me hum dono ko smajh he na aai ki kya bole, ya phir hum bina ruke baate krte rhe. 😂💗`,
+`Or future me to bs yhi imagine krti hu hum dono successful hojai or phir shadi krke hamesha saath rhe duniya ghoome sath me hr chiz experience kree`
+  ]
+ },
+
+ letter:{
+  label:"FILE 004 · DIL SE LIKHA LETTER",
+  title:"Mere Babe ke lye ek letter 💌",
+  pages:[
+`Mere Babe, mere darling, mere cutiee… 💗
+
+Ye website bnate hue mai soch rhi thi ki aapko kya-kya likhu. Itni saari baate h jo mai aapse kehna chati hu, pr jb likhne baitho toh kbhi words km pd jaate h or kbhi smajh nhi aata shuru kha se kru. Isliye maine socha, ek-ek baat ko alag surprise bna deti hu. aap jab chaho, inhe open kr skte ho...`,
+`Babe, mai dil se chati hu ki aapki life me sb achaa ho. aap apne dreams poore kro, apni mehnat ka result dekho, or khud ko un nazro se dekhna seekho jin nazron se aap apne idol logo ko dekhte ho mere cutiee. 🫶🏻`,
+`Muje hamari story me khushi chahiye, bout saara pyaarr chaiye, honesty chahiye, patience chahiye or wo effort chahiye jo chhoti cheezon me dikhai deta h. Mai chati hu hum ek doosre ko smajhne ki koshish krte rhe, apni feelings share kre, or sath em hr dream poora kre. Perfect hona zaruri nhi — real rhna or care krna zyada important h.`,
+`Or last me bs itna, mere darling: agr kbhi aapko ye jaanne ka mann kre ki maine aapke lye ye sb kyu bnaya, to answer simple h. Kyuki aap mere lye special ho, or mai chati thi ki aapke paas ek aisi jgha ho jha aap kbhi bhe aa sko or kuch pyaare words pdh sako.Filal, ye aapke lye meri trf se ek virtual little love letter h. 🥹💗`
+  ]
+ }
+};
+let activeFile=null,activePage=0;
+function goTo(n){document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));document.getElementById('scene'+n).classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+function openMystery(key){activeFile=mysteryFiles[key];activePage=0;renderModal();document.getElementById('modal').classList.add('open');document.body.style.overflow='hidden';sparkBurst(16)}
+function renderModal(){const f=activeFile,pages=f.pages;document.getElementById('modalLabel').textContent=f.label;document.getElementById('modalTitle').textContent=f.title;document.getElementById('modalBody').innerHTML='';const p=document.createElement('p');p.textContent=pages[activePage];document.getElementById('modalBody').appendChild(p);document.getElementById('progress').style.width=((activePage+1)/pages.length*100)+'%';document.getElementById('modalNext').textContent=activePage===pages.length-1?'Ye secret yahin seal karein ♡':'Agla page →'}
+function nextModal(){if(activePage<activeFile.pages.length-1){activePage++;renderModal();sparkBurst(8)}else{closeMystery();showToast('Ye chhoti si baat ab tumhare paas safe hai. ♡')}}
+function closeMystery(){document.getElementById('modal').classList.remove('open');document.body.style.overflow=''}
+let toastTimer;function showToast(message){const t=document.getElementById('toast');t.textContent=message;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3300)}
+function sparkBurst(n){const c=document.getElementById('fx'),ctx=c.getContext('2d');const dpr=Math.min(devicePixelRatio||1,2);c.width=innerWidth*dpr;c.height=innerHeight*dpr;c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';ctx.setTransform(dpr,0,0,dpr,0,0);const parts=Array.from({length:n},()=>({x:innerWidth*(.2+Math.random()*.6),y:innerHeight*.55,vx:(Math.random()-.5)*5,vy:-Math.random()*5-1,life:45+Math.random()*30,size:2+Math.random()*3,char:Math.random()>.5?'✦':'♡'}));function draw(){ctx.clearRect(0,0,innerWidth,innerHeight);let alive=false;parts.forEach(p=>{if(p.life<=0)return;alive=true;p.x+=p.vx;p.y+=p.vy;p.vy+=.07;p.life--;ctx.globalAlpha=Math.min(1,p.life/25);ctx.fillStyle=Math.random()>.5?'#ff9dcc':'#d4b3ff';ctx.font=p.size*5+'px serif';ctx.fillText(p.char,p.x,p.y)});ctx.globalAlpha=1;if(alive)requestAnimationFrame(draw);else ctx.clearRect(0,0,innerWidth,innerHeight)}requestAnimationFrame(draw)}
+function setupStars(){const canvas=document.getElementById('stars'),ctx=canvas.getContext('2d');let stars=[];function resize(){const dpr=Math.min(devicePixelRatio||1,2);canvas.width=innerWidth*dpr;canvas.height=innerHeight*dpr;canvas.style.width=innerWidth+'px';canvas.style.height=innerHeight+'px';ctx.setTransform(dpr,0,0,dpr,0,0);stars=Array.from({length:Math.min(95,Math.floor(innerWidth/4))},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.4+.3,a:Math.random()*.55+.12,phase:Math.random()*6.28}))}function draw(t){ctx.clearRect(0,0,innerWidth,innerHeight);stars.forEach(s=>{const alpha=s.a*(.65+.35*Math.sin(t*.001+s.phase));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,214,236,${alpha})`;ctx.fill()});requestAnimationFrame(draw)}resize();window.addEventListener('resize',resize);requestAnimationFrame(draw)}
+let musicPlaying=false;async function toggleMusic(){const audio=document.getElementById('music'),btn=document.getElementById('musicButton');if(!musicPlaying){try{await audio.play();musicPlaying=true;btn.textContent='♫ soft vibes: on'}catch(e){btn.textContent='Music file add karo ♡';showToast('Licensed MP3 ko soft-romantic.mp3 naam se isi folder mein rakho. ♡')}}else{audio.pause();musicPlaying=false;btn.textContent='♫ soft vibes: off'}}
+setupStars();
+</script>
+</body>
+</html>
